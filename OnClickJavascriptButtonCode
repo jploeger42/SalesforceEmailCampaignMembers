@@ -1,0 +1,44 @@
+{!REQUIRESCRIPT("/soap/ajax/20.0/connection.js") } 
+{!REQUIRESCRIPT("//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js") } 
+{!REQUIRESCRIPT("/soap/ajax/30.0/apex.js")} 
+var campId = "{!Campaign.Id}";
+var emails;
+var i;
+
+var cmEmailPull = sforce.connection.query("SELECT Contact.Email, Lead.Email From CampaignMember Where CampaignId = '" + campId + "'");	
+var records = cmEmailPull.getArray("records");
+if (records != undefined) {
+	
+	for (i = 0; i< records.length; i++) {
+		var record = records[i];
+		
+		try {
+			var temp = record.Contact.Email;
+			if (emails == undefined) {
+				emails = record.Contact.Email;
+			} else {
+				emails = emails + ";" + record.Contact.Email;
+			}
+		}	
+		 catch (e) {
+		 try {
+			if (emails == undefined) {
+				emails = record.Lead.Email;
+			} else {
+				emails = emails + ";" + record.Lead.Email;
+			}
+			}
+			catch (e) {}
+			
+		}
+		
+	}
+}
+
+var myWindow = window.open("mailto:?bcc=" + emails);
+try {
+myWindow.close();
+}
+catch (e) {
+	alert("Unable to Open Email. Check To See if Popup Was Blocked and Try Again.");
+}
