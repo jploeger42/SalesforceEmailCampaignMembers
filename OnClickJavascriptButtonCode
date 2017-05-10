@@ -15,9 +15,9 @@ if (records != undefined) {
 		try {
 			var temp = record.Contact.Email;
 			if (emails == undefined) {
-				emails = record.Contact.Email;
+				emails = temp;
 			} else {
-				emails = emails + ";" + record.Contact.Email;
+				emails = emails + ";" + temp;
 			}
 		}	
 		 catch (e) {
