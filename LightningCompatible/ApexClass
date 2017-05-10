@@ -1,0 +1,24 @@
+public with sharing class ltng_CampaignEmailAttendees {
+   
+    @AuraEnabled
+    public static string getAttendeeEmails(string campaignId){
+        string allEmails = '';
+        
+        string campaignMemberQuery = 'SELECT Id, Contact.Email, Lead.Email FROM CampaignMember WHERE CampaignId = \'' + campaignId + '\'';
+        List<CampaignMember> campaignMembers = database.query(campaignMemberQuery);
+
+        if (members.size() > 0)
+        { 
+              for (CampaignMember member : campaignMembers)
+              {
+                  string theEmail = member.Contact.Email != '' ? member.Contact.Email : member.Lead.Email;
+                  if (theEmail != '')
+                  {
+                     allEmails += theEmail + '; '; 
+                  }      
+              }     
+        }
+    
+        return allEmails;
+    }
+}
