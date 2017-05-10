@@ -1,0 +1,5 @@
+<aura:component implements="force:lightningQuickAction, flexipage:availableForRecordHome, force:hasRecordId" 
+                controller="ltng_CampaignEmailAttendees" access="global">
+   
+    <ui:button label="Email Attendees" press="{!c.emailAttendees}" />
+</aura:component>
