@@ -2,6 +2,11 @@ public with sharing class ltng_CampaignEmailAttendees {
    
     @AuraEnabled
     public static string getAttendeeEmails(string campaignId){
+        if (campaignId == '')
+        {
+            return null;
+        }
+        
         string allEmails = '';
         
         string campaignMemberQuery = 'SELECT Id, Contact.Email, Lead.Email FROM CampaignMember WHERE CampaignId = \'' + campaignId + '\'';
