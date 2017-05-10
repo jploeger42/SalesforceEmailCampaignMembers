@@ -1,0 +1,5 @@
+<design:component label="Email Attendees">
+    <sfdc:objects >
+    	<sfdc:object >Campaign</sfdc:object>
+    </sfdc:objects>
+</design:component>
