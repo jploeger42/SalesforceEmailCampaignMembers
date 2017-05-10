@@ -1,0 +1,40 @@
+({
+	emailAttendees : function(component, event, helper) {
+		var action = component.get("c.getAttendeeEmails");
+        
+        action.setParams({
+            "campaignId" : component.get("v.recordId")
+        });
+        
+        action.setCallback(this, function(response){
+            var state = response.getState();
+            if(component.isValid() && state ==="SUCCESS")
+            {
+                var emails = response.getReturnValue();
+                if (emails)
+                {
+                    try {
+                        var urlEvent = $A.get("e.force:navigateToURL");
+                        urlEvent.setParams({
+                            "url" : "mailto:?bcc=" + emails
+                        })
+                        urlEvent.fire();
+                    } 
+                    catch (e) { 
+                        alert("Unable to Open Email. Check To See if Popup Was Blocked and Try Again."); 
+                    }
+                }
+                else
+                {
+                    alert("Unable to export email due to a server side error. Please try again and then reach out to your administrator.")
+                }
+            }
+            else
+            {
+                alert("Unable to export email due to a server side error. Please try again and then reach out to your administrator.")
+            }
+        });
+        
+        $A.enqueueAction(action);
+	}
+})
