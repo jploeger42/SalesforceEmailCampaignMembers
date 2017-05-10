@@ -1,0 +1,30 @@
+@istest
+private class ltng_CampaignEmailAttendeesTest {
+    @testSetup static void testSetup()
+    {
+        Contact cont = new Contact(LastName = 'Test1', Email = 'test@test.com');
+        insert cont;
+        
+        Campaign camp = new Campaign(Name = 'TestCampaign');
+        insert camp;
+        
+        CampaignMember campaignMember = new CampaignMember(CampaignId = camp.Id, ContactId = cont.Id, LeadId = null);
+        insert campaignMember;
+    }
+    
+    static testMethod void testForSuccess()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign WHERE Name = 'TestCampaign' LIMIT 1];
+        
+        system.assert(campaigns.size() > 0);
+  
+        string attendeeEmails = ltng_CampaignEmailAttendees.getAttendeeEmails(campaigns[0].Id);
+ 
+        system.assert(attendeeEmails != '');
+    }
+    
+    static testMethod void testForFailure()
+    {
+        system.assert(ltng_CampaignEmailAttendees.getAttendeeEmails('') == null);
+    }
+}
